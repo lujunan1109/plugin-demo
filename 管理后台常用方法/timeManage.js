@@ -1,4 +1,6 @@
 
+const Time = {};
+
 // 时间戳转化
 Time.dateFormatDate = function (date, fmt) {
     if (/(y+)/.test(fmt)) {

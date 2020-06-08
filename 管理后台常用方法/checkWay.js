@@ -1,3 +1,5 @@
+const Tools = {}
+
 Tools.checkPhone = function (target, phone) {
     if (!(/^[1][3,4,5,7,8][0-9]{9}$/.test(phone))) {
         target.toast(target, '手机号码有误，请重填', 'error')
