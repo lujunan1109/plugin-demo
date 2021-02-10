@@ -1,0 +1,90 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-09-27 15:49:40
+ * @LastEditTime: 2020-09-27 18:02:32
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \ting_ge_blogd:\项目管理\DEMO\布局急先锋\两栏布局.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .top {
+            position: relative;
+        }
+        .bot {
+            display: flex;
+        }
+        .left {
+            width: 200px;
+            height: 50vh;
+            float: left;
+            background-color: darkmagenta;
+        }
+        .right {
+            overflow: hidden;
+            width: calc(100%-200);
+            height: 50vh;
+            background: saddlebrown;
+        }
+
+        .flex-left {
+            width: 200px;
+            height: 50vh;
+            background: salmon;
+        }
+        .flex-right {
+            /* flex: 1;
+             */
+             flex-grow:1;
+            flex-shrink:1;
+            flex-basis:100%;
+            width: calc(100%-200px);
+            height: 50vh;
+            background: skyblue;
+        }
+        .position {
+            overflow: hidden;
+            border: 2px solid red;
+
+        }
+        .position p{
+            width: 200px;
+            height: 200px;
+            background: darkmagenta;
+            position: relative;
+            top: 40px;
+            left: 70px;
+        }
+    </style>
+</head>
+<body>
+    <div class="top">
+            <div class="left"></div>
+    <div class="right">
+        <p>利用BFC中浮动元素不会和BFC重叠</p>
+    </div>
+    </div>
+
+    <div class="bot">
+            <div class="flex-left"></div>
+    <div class="flex-right">
+        <p>flex：1的含义 
+            flex-grow:放大比例 || 0
+            flex-shrink:缩小比例  || 1
+            flex-basis:分配空间前定义的长度  auto即项目的本来大小 || auto
+            auto (1 1 auto) 和 none (0 0 auto)和1(1 1 0%)
+        </p>
+    </div>
+    </div>
+    <div class="position">
+        <p>我是relative,相对定位的元素，无论设置偏移，它仍然占据文档中的原有位置。设置偏移之后，只是在视觉上相对于原有的位置移动了而已，并且对父元素和兄弟元素的布局都没有任何影响，但可能会覆盖其他元素。
+
+            相对，绝对，固定定位有意思</p>
+    </div>
+</body>
+</html>

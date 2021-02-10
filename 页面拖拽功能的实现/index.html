@@ -1,0 +1,110 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-07-10 12:42:50
+ * @LastEditTime: 2020-07-13 16:04:56
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \DEMO\drop\index.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        div,
+        p,
+        body {
+            margin: 0;
+            padding: 0;
+        }
+
+        #div1 {
+            width: 200px;
+            height: 200px;
+            background: #deb887;
+            position: absolute;
+            cursor: move;
+        }
+    </style>
+</head>
+
+<body>
+
+    <body>
+        <div id="div1">
+        </div>
+    </body>
+
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+    <script>
+        var htmlStr = `<p>123456</p>`;
+        $('#div1').html(htmlStr);
+
+
+        window.onload = function () {
+            var oDiv = document.getElementById('div1')
+            var disX = 0;
+            var disY = 0;
+
+            oDiv.onmousedown = function (ev) { //,当鼠标按钮被按下
+
+                var oEvent = ev || event;
+                disX = oEvent.clientX - oDiv.offsetLeft;// 鼠标离盒子左侧边距距离
+                disY = oEvent.clientY - oDiv.offsetTop;
+
+                document.onmousemove = throttle(this, move, 1 / 100 * 1000); //做节流的处理，减少事件触发
+                function move(ev) {
+
+                    var oEvent = ev || event;
+                    var l = oEvent.clientX - disX;
+                    var t = oEvent.clientY - disY;
+                    console.log('l', l, 'oDiv.offsetLeft', oDiv.offsetLeft)
+                    //此处的判断是为了防止拖拽框被拖出屏幕可视区域
+                    if (l < 0) { //鼠标左移l变为负数
+                        l = 0; //设置盒子style.left的边距
+                    } else if (l > document.documentElement.clientWidth - oDiv.offsetWidth) {
+                        console.log(document.documentElement.clientWidth, oDiv.offsetWidth)
+                        l = document.documentElement.clientWidth - oDiv.offsetWidth;
+                    }
+                    if (t < 0) {
+                        t = 0;
+                    } else if (t > document.documentElement.clientHeight - oDiv.offsetHeight) {
+                        t = document.documentElement.clientHeight - oDiv.offsetHeight;
+                    }
+                    oDiv.style.left = l + 'px';
+                    oDiv.style.top = t + 'px';
+                };
+                //此处是为了防止在火狐浏览器下拖拽时会出现的两次阴影的效果，此处代码可以禁用
+                document.onmouseup = function () { //当鼠标按下被释放
+                    document.onmousemove = null;
+                    document.onmouseup = null;
+                }
+            }
+
+
+            // 节流
+            function throttle(ctx, fn, delay = 1000) {
+                const that = ctx;
+                // 保存一个标记
+                let canRun = true
+                return function () {
+                    // 说明函数还未运行
+                    if (!canRun) return
+                    canRun = false
+                    setTimeout(() => {
+                        //https://www.runoob.com/w3cnote/js-call-apply-bind.html (call,apply,bind区别)
+                        fn.apply(that, arguments)
+                        // 运行完毕后设置为true，可以进行下次函数
+                        canRun = true
+                    }, delay)
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>

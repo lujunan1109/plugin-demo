@@ -1,0 +1,173 @@
+<title>无缝轮播图</title>
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+  }
+
+  ul {
+    list-style: none;
+  }
+
+  .swiper-container {
+    width: 600px;
+    height: 300px;
+    border: 1px solid #ccc;
+    margin: 100px auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .swiper-banner {
+    position: absolute;
+    top: 0;
+    left: 0
+  }
+
+  .swiper-banner li {
+    float: left;
+  }
+
+  .num {
+    width: 100%;
+    text-align: center;
+    font-size: 0;
+  }
+
+  .num li {
+    width: 10px;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.5);
+    display: block;
+    border-radius: 100%;
+    display: inline-block;
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
+  .btn {
+    display: none;
+  }
+
+  img {
+    width: 600px;
+    height: 300px;
+  }
+
+  .btn span {
+    display: block;
+    width: 50px;
+    height: 100px;
+    background: rgba(0, 0, 0, 0.6);
+    color: #fff;
+    font-size: 40px;
+    line-height: 100px;
+    text-align: center;
+    cursor: pointer;
+  }
+
+  .btn .prev {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    margin-top: -50px;
+  }
+
+  .btn .next {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    margin-top: -50px;
+  }
+
+  .num .active {
+    background-color: #fff;
+  }
+</style>
+<script src="http://apps.bdimg.com/libs/jquery/1.8.3/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="swiper-container">
+    <ul class="swiper-banner">
+      <li><a href="javascript:void(0)"><img src="http://www.jq22.com/img/cs/500x300-1.png" alt="第1张图片"></a></li>
+      <li><a href="#"><img src="http://www.jq22.com/img/cs/500x300-2.png" alt="第2张图片"></a></li>
+      <li><a href="#"><img src="http://www.jq22.com/img/cs/500x300-3.png" alt="第3张图片"></a></li>
+      <li><a href="#"><img src="http://www.jq22.com/img/cs/500x300-4.png" alt="第4张图片"></a></li>
+      <li><a href="#"><img src="http://www.jq22.com/img/cs/500x300-5.png" alt="第5张图片"></a></li>
+    </ul>
+
+  </div>
+  <ul class="num"></ul>
+
+
+  <script>
+
+    function clickFunc() {
+      $('iframe').attr('src','https://www.bilibili.com/video/BV1bK411M7vF?spm_id_from=333.851.b_7265636f6d6d656e64.1');
+    }
+
+    $(function() {
+
+      var i=0;
+      var timer=null;
+      for(var j=0;j<$('.swiper-banner li').length;j++) { //创建圆点
+        $('.num').append('<li></li>')
+      }
+
+
+      $('.num li').first().addClass('active'); //给第一个圆点添加样式
+
+      var firstimg=$('.swiper-banner li').first().clone(); //复制第一张图片
+      $('.swiper-banner').append(firstimg).width($('.swiper-banner li').length*($('.swiper-banner img').width())); //将第一张图片放到最后一张图片后，设置ul的宽度为图片张数*图片宽度
+
+
+
+
+      //鼠标划入圆点
+      $('.num li').mouseover(function() {
+        var _index=$(this).index();
+        i=_index;
+        $('.swiper-banner').stop().animate({left: -_index*600},150);
+        $('.num li').eq(_index).addClass('active').siblings().removeClass('active');
+      })
+
+      //定时器自动播放
+      timer=setInterval(function() {
+        i++;
+        // debugger
+        if(i==$('.swiper-banner li').length) {
+          i=1;
+          $('.swiper-banner').css({left: 0});
+        };
+
+        $('.swiper-banner').stop().animate({left: -i*600},300);
+        if(i==$('.swiper-banner li').length-1) {
+          $('.num li').eq(0).addClass('active').siblings().removeClass('active');
+        } else {
+          $('.num li').eq(i).addClass('active').siblings().removeClass('active');
+        }
+      },2000)
+
+      //鼠标移入，暂停自动播放，移出，开始自动播放
+      $('.swiper-container').hover(function() {
+        clearInterval(timer);
+      },function() {
+        timer=setInterval(function() {
+          i++;
+          if(i==$('.swiper-banner li').length) {
+            i=1;
+            $('.swiper-banner').css({left: 0});
+          };
+
+          $('.swiper-banner').stop().animate({left: -i*600},300);
+          if(i==$('.swiper-banner li').length-1) {
+            $('.num li').eq(0).addClass('active').siblings().removeClass('active');
+          } else {
+            $('.num li').eq(i).addClass('active').siblings().removeClass('active');
+          }
+        },2000)
+      })
+
+    })
+  </script>

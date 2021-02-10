@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        .p-p {
+            width: expression(func(this));
+            height: 80px;
+            border: 1px solid #f00;
+        }
+
+        .cpt-toast {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            animation: bounce-hastrans 5s ease-in-out;
+            -webkit-animation: bounce-hastrans 5s ease-in-out;
+            -webkit-transition: all 2s ease-out;
+            transition: all 2s ease-out;
+
+            -webkit-appearance: none;
+            display: table-cell;
+            /* vertical-align: center; */
+
+            width: auto;
+            height: 40px;
+            line-height: 40px;
+            /* text-align: center; */
+            padding: 5px 10px;
+            border-radius: 5px;
+            background: rgna(0, 0, 0, 0.5);
+            border: 1px dashed red;
+        }
+
+        @keyframes bounce-hastrans {
+
+            0%,
+            0%,
+            100% {
+                -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                -webkit-transform: translate3d(-50%, -50%, 0);
+                transform: translate3d(-50%, -50%, 0);
+            }
+
+            20%,
+            53%,
+            80% {
+                -webkit-animation-timing-function: cubic-bezier(.215, .61, .355, 1);
+                animation-timing-function: cubic-bezier(.215, .61, .355, 1);
+                -webkit-transform: translate(-50%, 0);
+                transform: translate(-50%, 0);
+                -webkit-transform: translate3d(-50%, 0, 0);
+                transform: translate3d(-50%, 0, 0);
+            }
+
+            40%,
+            43% {
+                -webkit-animation-timing-function: cubic-bezier(.755, .05, .855, .06);
+                animation-timing-function: cubic-bezier(.755, .05, .855, .06);
+                -webkit-transform: translate(-50%, -67%);
+                transform: translate(-50%, -67%);
+                -webkit-transform: translate3d(-50%, -67%, 0);
+                transform: translate3d(-50%, -67%, 0);
+            }
+
+            70% {
+                -webkit-animation-timing-function: cubic-bezier(.755, .05, .855, .06);
+                animation-timing-function: cubic-bezier(.755, .05, .855, .06);
+                -webkit-transform: translate(-50%, -58%);
+                transform: translate(-50%, -58%);
+                -webkit-transform: translate3d(-50%, -58%, 0);
+                transform: translate3d(-50%, -58%, 0);
+            }
+
+            90% {
+                -webkit-transform: translate(-50%, -52%);
+                transform: translate(-50%, -52%);
+                -webkit-transform: translate3d(-50%, -52%, 0);
+                transform: translate3d(-50%, -52%, 0);
+            }
+
+            100% {
+                -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+                -webkit-transform: translate3d(-50%, -50%, 0);
+                transform: translate3d(-50%, -50%, 0);
+            }
+        }
+    </style>
+</head>
+
+<body leftmargin=0 topmargin=0 oncontextmenu='return false' ondragstart='return false' onselectstart='return false'
+    onselect='document.selection.empty()' oncopy='document.selection.empty()' onbeforecopy='return false'
+    onmouseup='document.selection.empty()'>
+
+    <div style="height: 1px;background: darkorange;">
+
+    </div>
+    <div id="num1">
+
+    </div>
+    <p class="p-p">我是p标签</p>
+    <div class="cpt-toast"
+        style="position: fixed; top: 50%; left: 50%; z-index: 1002; transform: translate3d(-50%, -50%, 0px); animation-duration: 1s;">
+        我是登录框
+    </div>
+    <svg width='140' height='170' xmlns='http://wwww.w3.org/2000/svg'>
+        <title>Cat</title>
+        <desc>Stick Figure of Cat</desc>
+        <!-- 在这里绘制图像 -->
+    </svg>
+
+    <!-- svg真的可以为所欲为 -->
+    <svg width="500" height="500">
+        <defs>
+            <path id="myPath" d="M 100 100 Q 150 50 200 100" stroke="#adc" fill="none"></path>
+        </defs>
+        <text>
+            <textPath xlink:href="#myPath">知道啦!!!</textPath>
+        </text>
+    </svg>
+
+
+    <script>
+        var DynamicNumber={};
+        DynamicNumber.NumberList={};
+        /**
+    * 在指定的 DOM 元素中动态显示数值
+    * 作者：triplestudio@sina.com
+    *
+    * @param elementId  :      DOM 元素ID
+    * @param number     :      数值
+    */
+        DynamicNumber.show=function(elementId,number) {
+            // 1. 已建立过对象直接调用
+            var dynaNum=this.NumberList[elementId];
+            if(dynaNum) {
+                dynaNum.step=0;
+                dynaNum.desNumber=number;
+                dynaNum.render();
+                return;
+            }
+
+            // 2. 创建动态数字绘制对象
+            dynaNum=new function(_elementId) {
+                this.elementId=_elementId;
+                this.preNumber=0; // 变化过程值
+                this.desNumber=0; // 目标数值，最终显示值
+
+                this.step=0;      // 变化步长，支持正向反向
+                // 绘制过程
+                this.render=function() {
+                    // （1）结束条件
+                    if(this.preNumber==this.desNumber) {
+                        this.step=0;
+                        return;
+                    }
+
+                    // （2）步长设置（计划 2 秒完成 40*50=2000）
+                    if(this.step==0) {
+                        this.step=Math.round((this.desNumber-this.preNumber)/40);
+                        if(this.step==0) this.step=(this.desNumber-this.preNumber>0)? 1:-1;
+                    }
+
+                    // （3）走一步
+                    this.preNumber+=this.step;
+                    if(this.step<0) {
+                        if(this.preNumber<this.desNumber) this.preNumber=this.desNumber;
+                    } else {
+                        if(this.preNumber>this.desNumber) this.preNumber=this.desNumber;
+                    }
+
+                    // （4）显示
+                    document.getElementById(this.elementId).innerHTML=this.preNumber;
+
+                    // （5）每秒绘制 20 次（非精确值）
+                    var _this=this;
+                    setTimeout(function() {_this.render();},50);
+                };
+            }(elementId);
+
+            // 3. 登记绑定元素ID 
+            DynamicNumber.NumberList[elementId]=dynaNum;
+
+            // 4. 调用绘制
+            dynaNum.step=0;
+            dynaNum.desNumber=number;
+            dynaNum.render();
+        };
+
+
+        //使用
+        DynamicNumber.show("num1",100877678);
+    </script>
+    <script>
+        //这个脚本在ie5~ie8才支持，我操了
+        var n=0;
+        function func(elem) {
+            n++;
+            elem.style.width=document.body.clientWidth>400? '400px':"auto";
+            console.log(n);
+        }
+    </script>
+</body>
+
+</html>

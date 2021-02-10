@@ -1,0 +1,97 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Author: lujunan
+ * @Date: 2021-01-31 11:32:47
+ * @LastEditors: lujunan
+ * @LastEditTime: 2021-02-10 10:59:50
+ * @FilePath: \DEMO\异步请求顺序问题.html
+ * @Copyright (C) 2021 lujunan. All rights reserved.
+-->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+  <script>
+    //3秒后完成
+    function asyncThing1() {
+      var dfd=$.Deferred();
+      setTimeout(function() {
+        alert('asyncThing1 seems to be done...');
+        dfd.resolve('111');
+      },3000);
+      return dfd.promise();
+    }
+    //5秒后完成
+    function asyncThing2() {
+      var dfd=$.Deferred();
+      setTimeout(function() {
+        alert('asyncThing2 seems to be done...');
+        dfd.resolve('222');
+      },5000);
+      return dfd.promise();
+    }
+    //1秒后完成
+    function asyncThing3() {
+      var dfd=$.Deferred();
+      setTimeout(function() {
+        alert('asyncThing3 seems to be done...');
+        dfd.resolve('333');
+      },1000);
+      return dfd.promise();
+    }
+    //全部完成后
+    $.when(asyncThing1(),asyncThing2(),asyncThing3()).done(function(res1,res2,res3) {
+      alert('all done!');
+      alert(res1+', '+res2+', '+res3);
+    })
+
+    // es6 promise的链式调用
+    let p1=new Promise((resolve,reject) => {
+      reject('error');
+    });
+
+    let resultP=p1.then(null,result => {
+      console.log(result);
+      return 123; // 必须有返回值下面才可以接收到
+    });
+
+    // console.log(resultP);
+    resultP.then(tmp => {
+      console.log(tmp);
+    })
+
+
+
+    let p=new Promise((resolve,reject) => {
+      //...
+      let random=Math.random();//小于1大于0
+      if(random>0.4) {
+        resolve('random > 0.4');
+      } else {
+        reject('random <= 0.4');
+      }
+    });
+
+    p.then(result => {
+      console.log('resolve',result);
+    },result => {
+      console.log('reject',result);
+    });
+
+
+
+// 链接用法整理
+// https://www.jianshu.com/p/fe0159f8beb4
+  </script>
+</body>
+
+</html>

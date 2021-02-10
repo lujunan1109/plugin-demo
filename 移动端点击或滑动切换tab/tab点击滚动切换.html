@@ -1,0 +1,265 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-12-21 16:03:30
+ * @LastEditTime: 2021-02-10 10:30:31
+ * @LastEditors: lujunan
+ * @Description: In User Settings Edit
+ * @FilePath: \DEMO\tab点击滚动切换.html
+-->
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="author" content="rainna" />
+	<meta name="keywords" content="rainna's js lib" />
+	<meta name="description" content="移动端触摸滑动" />
+	<meta name="viewport"
+		content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>点击加滑动触发tab切换</title>
+	<link rel="shortcut icon" type="image/x-icon" href="favicon.ico" media="screen" />
+	<style type="text/css">
+		html,
+		body,
+		h1,
+		h2,
+		h3,
+		h4,
+		h5,
+		h6,
+		dl,
+		dt,
+		dd,
+		form,
+		p,
+		select,
+		span,
+		i,
+		b {
+			margin: 0;
+		}
+
+		ol,
+		ul,
+		th,
+		td,
+		textarea,
+		option {
+			margin: 0;
+			padding: 0;
+		}
+
+		ol,
+		ul,
+		li {
+			list-style: none;
+		}
+
+		a {
+			text-decoration: none;
+			color: #444444;
+		}
+
+		a:hover {
+			color: #922d8d;
+		}
+
+		a,
+		img,
+		i,
+		b {
+			display: inline-block;
+			font-style: normal;
+			font-weight: normal;
+			font-family: 'microsoft yaHei', 微软雅黑, arial;
+		}
+
+		img {
+			border: none;
+		}
+
+		h6 {
+			font-size: 14px;
+			color: #999;
+		}
+
+		body {
+			font-size: 0.12rem;
+			/* 初始化字体 */
+		}
+
+		header {
+			height: 0.44rem;
+			line-height: 0.44rem;
+			text-align: center;
+			font-size: 0.24rem;
+			color: #0fe60f;
+		}
+
+		.tabs {
+			/* tab切换导航 */
+			display: flex;
+		}
+
+		.tabs>span {
+			flex: 1;
+			text-align: center;
+			font-size: 0.2rem;
+			height: 0.6rem;
+			line-height: 0.6rem;
+			background: #eee;
+		}
+
+		.tabs>span:nth-of-type(1) {
+			color: #0000FF;
+			border-bottom: 1px #8787f1 solid;
+		}
+
+		.tabs>span:nth-of-type(2) {
+			color: #DC2E2E;
+		}
+
+		.tabs>span:nth-of-type(3) {
+			color: #FFB400;
+		}
+
+		.content {
+			/* tab切换内容 */
+			height: 8rem;
+		}
+
+		.content>div {
+			height: 8rem;
+			line-height: 8rem;
+			text-align: center;
+			font-size: 0.3rem;
+		}
+
+		.content>div:nth-of-type(1) {
+			color: #0000FF;
+			display: block;
+		}
+
+		.content>div:nth-of-type(2) {
+			color: #DC2E2E;
+			display: none;
+		}
+
+		.content>div:nth-of-type(3) {
+			color: #FFB400;
+			display: none;
+		}
+	</style>
+</head>
+
+<body>
+	<!-- <header>移动端原生解决点击和滑动tab切换</header> -->
+	<section>
+		<div class="tabs">
+			<span id="first">
+				竹叶网
+			</span>
+			<span id="second">
+				竹叶生鲜
+			</span>
+			<span id="third">
+				农业旅游
+			</span>
+		</div>
+		<div class="content" id="content">
+			<div class="firstContent">
+				竹叶网是一个综合性互联网平台。
+			</div>
+			<div class="secondContent">
+				竹叶生鲜是农产品外输的重要网络平台
+			</div>
+			<div class="thirdContent">
+				农业旅游是未来生态农业的一个重要发展趋势
+			</div>
+		</div>
+	</section>
+	<script src="https://lib.baomitu.com/jquery/3.5.1/jquery.js"></script>
+	<script src="/flexible.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript">
+		var l=0;
+		var r=0;
+		var i=0;
+		var touch;
+		var content=document.getElementById("content");
+		//通过点击事件切换
+		$("#first").click(function() {
+			$(this).css("border-bottom","1px #8787f1 solid");
+			$("#second").css("border-bottom","1px #eee solid");
+			$("#third").css("border-bottom","1px #eee solid");
+			$(".firstContent").css("display","block");
+			$(".secondContent").css("display","none");
+			$(".thirdContent").css("display","none");
+			i=0;
+		});
+		$("#second").click(function() {
+			$(this).css("border-bottom","1px #8787f1 solid");
+			$("#first").css("border-bottom","1px #eee solid");
+			$("#third").css("border-bottom","1px #eee solid");
+			$(".firstContent").css("display","none");
+			$(".secondContent").css("display","block");
+			$(".thirdContent").css("display","none");
+			i=1;
+		});
+		$("#third").click(function() {
+			$(this).css("border-bottom","1px #8787f1 solid");
+			$("#second").css("border-bottom","1px #eee solid");
+			$("#first").css("border-bottom","1px #eee solid");
+			$(".firstContent").css("display","none");
+			$(".secondContent").css("display","none");
+			$(".thirdContent").css("display","block");
+			i=2;
+		});
+		//通过滑动事件实现tab切换
+		content.ontouchstart=function() {
+			console.log(event)			//触摸滑动开始
+			touch=event.targetTouches[0]; //touches数组对象获得屏幕上所有的touch，取第一个touch
+			r=touch.screenX;
+		}
+		content.ontouchmove=function() {				//滑动过程中
+			touch=event.targetTouches[0]; //touches数组对象获得屏幕上所有的touch，取第一个touch
+		}
+		content.ontouchend=function() {				//滑动结束手指离开触摸屏
+			l=touch.screenX;
+			console.log(l);
+			if(r-l<-10) {		//向右滑动
+				i-=1;
+
+				if(i<=0) {
+					i=0;
+				}
+				//内容的切换
+				$(this).find("div")[i].style.display='block';
+				$(this).find("div")[i+1].style.display='none';
+				//导航的切换
+				$(".tabs").find("span")[i].style.borderBottom='1px #8787f1 solid';
+				$(".tabs").find("span")[i+1].style.borderBottom='1px #eee solid';
+				if(i==0) {
+					$(".tabs").find("span")[i+2].style.borderBottom='1px #eee solid';
+				}
+			}
+			if(r-l>10) {		//向左滑动
+				i+=1;
+				if(i>=2) {
+					i=2;
+				}
+				//内容的切换
+				$(this).find("div")[i].style.display='block';
+				$(this).find("div")[i-1].style.display='none';
+				//导航的切换
+				$(".tabs").find("span")[i].style.borderBottom='1px #8787f1 solid';
+				$(".tabs").find("span")[i-1].style.borderBottom='1px #eee solid';
+				if(i==2) {
+					$(".tabs").find("span")[i-2].style.borderBottom='1px #eee solid';
+				}
+			}
+		}
+	</script>
+</body>
+
+</html>

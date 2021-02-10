@@ -1,0 +1,128 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-12-10 11:23:54
+ * @LastEditTime: 2021-01-13 11:38:44
+ * @LastEditors: lujunan
+ * @Description: In User Settings Edit
+ * @FilePath: \DEMO\滚动条.html
+-->
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .scrollContainer {
+            width: 100vw;
+            height: 100vh;
+            -webkit-overflow-scrolling: auto;
+            overflow-y: auto;
+            overflow-x: hidden;
+            /* //解决父级元素scrollContainer加上定位position: absolute|relative，滑动几次后可滚动区域会卡主，不能在滑动 */
+            z-index: 1;
+            /* //解决快速滑动页面会出现空白，滑动停止后内容才显示 */
+            -webkit-backface-visibility: hidden;
+            -webkit-transform: translate3d(0, 0, 0);
+        }
+
+        .scrollContainer>ul>li {
+            height: 100px;
+            width: 100%;
+            background: #fff;
+        }
+
+        .s>ul>li {
+            display: block;
+            float: left;
+            list-style: none;
+            width: 100px;
+            height: 100px;
+            margin-right: 20px;
+        }
+
+
+        /*滚动条样式*/
+        ::-webkit-scrollbar {
+            /*滚动条整体样式*/
+            width: 8px;
+            /*高宽分别对应横竖滚动条的尺寸*/
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            /*滚动条里面小方块*/
+            border-radius: 5px;
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        ::-webkit-scrollbar-track {
+            /*滚动条里面轨道*/
+            -webkit-box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+            border-radius: 0;
+            background: rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <div style="width: 200px;height: 200px;background: saddlebrown;overflow: hidden;overflow-x: scroll;" class="s">
+        <ul style="width: 2300px;height: 200px;">
+            <li>345</li>
+            <li>345</li>
+            <li>345</li>
+
+        </ul>
+    </div>
+
+    <div class="scrollContainer">
+        <ul>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+            <li>1</li>
+            <li>2</li>
+            <li>3</li>
+            <li>4</li>
+            <li>5</li>
+            <li>6</li>
+            <li>7</li>
+            <li>8</li>
+            <li>9</li>
+            <li>10</li>
+        </ul>
+    </div>
+</body>
+
+</html>
